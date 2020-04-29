@@ -1,3 +1,4 @@
+import 'package:flute_music/home_page.dart';
 import 'package:flute_music/theming/dynamic_theming._bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -15,34 +16,12 @@ class MyApp extends StatelessWidget {
       stream: theme_bloc.currentTheme,
       builder: (context, snapshot) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: snapshot.data ? ThemeData.light() : ThemeData.dark() ,
-          home: MyHomePage(snapshot.data,theme_bloc),
+          theme: snapshot.data ? ThemeData.dark() : ThemeData.light(),
+          home: MyHomePage(snapshot.data, theme_bloc),
         );
       },
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  final ThemeBloc bloc ;
-  final bool isDark ;
-  MyHomePage(this.isDark,this.bloc);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(),
-      drawer: new Drawer(
-        child: ListView(
-          children: [
-            ListTile(
-              leading: new Text("Dark Mode"),
-              trailing: new Switch(value: this.isDark, onChanged: bloc.changeTheme,),
-            )
-          ],
-        ),
-      ),
     );
   }
 }
