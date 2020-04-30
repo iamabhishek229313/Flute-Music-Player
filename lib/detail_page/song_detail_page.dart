@@ -88,10 +88,10 @@ class _Song_Detail_PageState extends State<Song_Detail_Page> {
                   ),
                 ),
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.015,
+                  bottom: MediaQuery.of(context).size.height * 0.010,
                   child: new Container(
                     // color: Colors.blue,
-                    height: MediaQuery.of(context).size.height * 0.37,
+                    height: MediaQuery.of(context).size.height * 0.38,
                     width: MediaQuery.of(context).size.width,
                     child: new Neumorphic(
                         boxShape: NeumorphicBoxShape.circle(),
@@ -111,11 +111,127 @@ class _Song_Detail_PageState extends State<Song_Detail_Page> {
                               color: Colors.redAccent,
                               child: widget.info.albumArtwork == null
                                   ? null
-                                  : null),//Image.network(widget.info.albumArtwork)),
+                                  : null), //Image.network(widget.info.albumArtwork)),
                         )),
                   ),
                 ),
               ],
+            ),
+            new Container(
+              padding:
+                  EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(40.0)),
+              height: MediaQuery.of(context).size.height * 0.08,
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  new Text(
+                    widget.info.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: new TextStyle(
+                        fontFamily: 'Nunito',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                        fontSize: ScreenUtil().setSp(60.0)),
+                  ),
+                  new RichText(
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(children: [
+                        new TextSpan(
+                          text: "Artist  ",
+                          style: new TextStyle(
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: ScreenUtil().setSp(30.0)),
+                        ),
+                        new TextSpan(
+                          text: widget.info.artist,
+                          style: new TextStyle(
+                              fontFamily: 'Nunito',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: ScreenUtil().setSp(30.0)),
+                        )
+                      ])),
+                ],
+              ),
+            ),
+            new Container(
+              height: MediaQuery.of(context).size.height * 0.11,
+              padding:
+                  EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(0.0)),
+              child: new Slider(
+                min: 0.0,
+                max: 100.0,
+                value: 20.0,
+              ),
+            ),
+            new SizedBox(
+              height: ScreenUtil().setHeight(60.0),
+            ),
+            new Container(
+              height: MediaQuery.of(context).size.height * 0.10,
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.width * 0.5,
+                    child: NeumorphicButton(
+                      onClick: () {},
+                      provideHapticFeedback: true,
+                      boxShape: NeumorphicBoxShape.circle(),
+                      style: widget.isDark ? dark_softUI : light_softUI,
+                      child: new Icon(Icons.skip_previous),
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.width * 0.8,
+                    child: NeumorphicButton(
+                      onClick: () {},
+                      provideHapticFeedback: true,
+                      boxShape: NeumorphicBoxShape.circle(),
+                      style: widget.isDark ? dark_softUI : light_softUI,
+                      child: new Icon(Icons.play_arrow, size: 60.0),
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.width * 0.5,
+                    child: NeumorphicButton(
+                      onClick: () {},
+                      boxShape: NeumorphicBoxShape.circle(),
+                      style: widget.isDark ? dark_softUI : light_softUI,
+                      child: new Icon(Icons.skip_next),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            new Container(
+              height: MediaQuery.of(context).size.height * 0.10,
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  new NeumorphicButton(
+                    onClick: () {},
+                    boxShape: NeumorphicBoxShape.roundRect(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    style: widget.isDark ? dark_softUI : light_softUI,
+                    child: new Icon(Icons.all_inclusive),
+                  ),
+                  new NeumorphicButton(
+                    onClick: () {},
+                    boxShape: NeumorphicBoxShape.roundRect(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    style: widget.isDark ? dark_softUI : light_softUI,
+                    child: new Icon(
+                      Icons.favorite,
+                      color: Theme.of(context).cardColor,
+                    ),
+                  )
+                ],
+              ),
             )
           ],
         ),
