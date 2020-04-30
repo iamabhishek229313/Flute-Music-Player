@@ -5,7 +5,7 @@ class FetchSongs {
 
   songs_list() async {
     List<SongInfo> songsData = await audioQuery.getSongs();
-    await Future.delayed(Duration(seconds: 20));
+    await Future.delayed(Duration(seconds: 5));
     return songsData ;
   }
 }

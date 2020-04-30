@@ -1,4 +1,4 @@
-import 'package:flute_music/home_page.dart';
+import 'package:flute_music/home_page/home_page.dart';
 import 'package:flute_music/theming/dynamic_theming._bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +18,13 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: snapshot.data ? ThemeData.dark() : ThemeData.light(),
+          theme: snapshot.data
+              ? ThemeData.dark().copyWith(
+                  primaryColor: Color.fromRGBO(30, 31, 35, 1.0),
+                  highlightColor: Colors.white)
+              : ThemeData.light().copyWith(
+                  primaryColor: Color.fromRGBO(225, 230, 236, 1.0),
+                  highlightColor: Colors.black),
           home: MyHomePage(snapshot.data, theme_bloc),
         );
       },
