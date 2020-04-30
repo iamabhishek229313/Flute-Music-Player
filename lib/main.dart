@@ -20,9 +20,11 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: snapshot.data
               ? ThemeData.dark().copyWith(
+                  cardColor: Color.fromRGBO(176, 0, 32, 1.0),
                   primaryColor: Color.fromRGBO(30, 31, 35, 1.0),
                   highlightColor: Colors.white)
               : ThemeData.light().copyWith(
+                  cardColor: Color.fromRGBO(176, 0, 32, 1.0),
                   primaryColor: Color.fromRGBO(225, 230, 236, 1.0),
                   highlightColor: Colors.black),
           home: MyHomePage(snapshot.data, theme_bloc),

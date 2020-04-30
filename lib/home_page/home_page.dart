@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:flute_music/detail_page/song_detail_page.dart';
 import 'package:flute_music/home_page/animated_progress.dart';
+import 'package:flute_music/home_page/play_pause_button.dart';
+import 'package:flute_music/home_page/song_card_details.dart';
 import 'package:flute_music/neuromorphic_UI/neuromorphic_custom_styles.dart';
 import 'package:flute_music/song_data/fetch_songs.dart';
 import 'package:flute_music/theming/dynamic_theming._bloc.dart';
@@ -87,115 +90,47 @@ class _MyHomePageState extends State<MyHomePage>
 
                             return Container(
                               height: MediaQuery.of(context).size.height * 0.09,
-                              margin: index == 0 ? EdgeInsets.only(top: 10.0) : null,
+                              margin: index == 0
+                                  ? EdgeInsets.only(top: 10.0)
+                                  : null,
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   new Expanded(
                                       flex: 4,
-                                      child: new Row(
-                                        children: [
-                                          new Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                height: ScreenUtil()
-                                                    .setHeight(95.0),
-                                                width: ScreenUtil()
-                                                    .setHeight(95.0),
-                                                decoration: new BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: Colors.primaries[
-                                                        Random().nextInt(Colors
-                                                            .primaries
-                                                            .length)]),
-                                              )),
-                                          new Expanded(
-                                              flex: 4,
-                                              child: new Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  new Text(
-                                                    info.displayName,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                    style: new TextStyle(
-                                                        fontFamily: 'Nunito',
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(40.0)),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => Song_Detail_Page(info,widget.isDark)));
+                                        },
+                                        child: new Row(
+                                          children: [
+                                            new Expanded(
+                                                flex: 1,
+                                                child: Hero(
+                                                  tag: info.filePath,
+                                                  child: Container(
+                                                    height: ScreenUtil()
+                                                        .setHeight(95.0),
+                                                    width: ScreenUtil()
+                                                        .setHeight(95.0),
+                                                    decoration: new BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: info.albumArtwork ==
+                                                                null
+                                                            ? Colors.primaries[
+                                                                Random().nextInt(
+                                                                    Colors
+                                                                        .primaries
+                                                                        .length)]
+                                                            : Colors.black),
                                                   ),
-                                                  RichText(
-                                                    text:
-                                                        new TextSpan(children: [
-                                                      new TextSpan(
-                                                          text: "Duration: ",
-                                                          style: new TextStyle(
-                                                              color:
-                                                                  Colors.grey,
-                                                              fontFamily:
-                                                                  'Nunito',
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          35),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600)),
-                                                      new TextSpan(
-                                                          text:
-                                                              "${duration.toStringAsPrecision(1)} ",
-                                                          style: new TextStyle(
-                                                              color:
-                                                                  Colors.grey,
-                                                              fontFamily:
-                                                                  'Nunito',
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          40),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400)),
-                                                      new TextSpan(
-                                                          text: "s",
-                                                          style: new TextStyle(
-                                                              color:
-                                                                  Colors.grey,
-                                                              fontFamily:
-                                                                  'Nunito',
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          30),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900)),
-                                                    ]),
-                                                  ),
-                                                  new Divider(
-                                                    height: 0.0,
-                                                  )
-                                                ],
-                                              ))
-                                        ],
+                                                )),
+                                            Song_Card_Details(
+                                                info: info, duration: duration)
+                                          ],
+                                        ),
                                       )),
-                                  new Expanded(
-                                    flex: 1,
-                                    child: new NeumorphicButton(
-                                      boxShape: NeumorphicBoxShape.circle(),
-                                      onClick: () {},
-                                      style: widget.isDark
-                                          ? dark_softUI
-                                          : light_softUI,
-                                      child: new Icon(
-                                        Icons.play_arrow,
-                                        color: Theme.of(context).highlightColor,
-                                      ),
-                                    ),
-                                  )
+                                  Play_Pause_Button(widget: widget)
                                 ],
                               ),
                             );
