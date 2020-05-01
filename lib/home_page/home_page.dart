@@ -85,9 +85,12 @@ class _MyHomePageState extends State<MyHomePage>
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
                             final SongInfo info = snapshot.data[index];
+                            final Color albumArt = info.albumArtwork == null
+                                ? Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)]
+                                : Colors.black;
                             final double duration =
                                 int.parse(info.duration) / 1000 / 60;
-
                             return Container(
                               height: MediaQuery.of(context).size.height * 0.09,
                               margin: index == 0
@@ -100,14 +103,21 @@ class _MyHomePageState extends State<MyHomePage>
                                       flex: 4,
                                       child: GestureDetector(
                                         onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => Song_Detail_Page(info,widget.isDark)));
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Song_Detail_Page(
+                                                          info,
+                                                          albumArt,
+                                                          widget.isDark)));
                                         },
-                                        child: new Row(
-                                          children: [
-                                            new Expanded(
-                                                flex: 1,
-                                                child: Hero(
-                                                  tag: info.filePath,
+                                        child: Container(
+                                          color: Colors.transparent,
+                                          child: new Row(
+                                            children: [
+                                              new Expanded(
+                                                  flex: 1,
                                                   child: Container(
                                                     height: ScreenUtil()
                                                         .setHeight(95.0),
@@ -123,11 +133,12 @@ class _MyHomePageState extends State<MyHomePage>
                                                                         .primaries
                                                                         .length)]
                                                             : Colors.black),
-                                                  ),
-                                                )),
-                                            Song_Card_Details(
-                                                info: info, duration: duration)
-                                          ],
+                                                  )),
+                                              Song_Card_Details(
+                                                  info: info,
+                                                  duration: duration)
+                                            ],
+                                          ),
                                         ),
                                       )),
                                   Play_Pause_Button(widget: widget)
