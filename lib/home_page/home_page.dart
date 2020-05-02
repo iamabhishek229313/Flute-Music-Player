@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flute_music/detail_page/repository/play_bloc.dart';
+import 'package:flute_music/detail_page/repository/playing_song_data_bloc.dart';
 import 'package:flute_music/detail_page/song_detail_page.dart';
 import 'package:flute_music/home_page/animated_progress.dart';
 import 'package:flute_music/home_page/play_pause_button.dart';
@@ -146,6 +147,7 @@ class _MyHomePageState extends State<MyHomePage>
                                             )),
                                         Play_Pause_Button(
                                           isDark: isDark,
+                                          info : info
                                         )
                                       ],
                                     ),
@@ -166,6 +168,9 @@ class _MyHomePageState extends State<MyHomePage>
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.10,
                             color: Colors.red,
+                            child: new Text(
+                              BlocProvider.of<SongDataBloc>(context).state
+                            ),
                           ))
                       : SizedBox();
                 },
