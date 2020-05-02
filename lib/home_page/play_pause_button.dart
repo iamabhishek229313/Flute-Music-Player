@@ -27,8 +27,11 @@ class Play_Pause_Button extends StatelessWidget {
         child: new NeumorphicButton(
             boxShape: NeumorphicBoxShape.circle(),
             onClick: () {
-              playBloc.add(PlayEvent.triggerChange);
+              if(songData.state != info.filePath && songData.state != ''){
+                playBloc.add(PlayEvent.triggerChange) ;
+              }
               songData.add(ChangeSongId(info.filePath));
+              playBloc.add(PlayEvent.triggerChange);
             },
             style: isDark ? dark_softUI : light_softUI,
             child: BlocBuilder<PlayBloc, bool>(
