@@ -1,3 +1,4 @@
+import 'package:flute_music/detail_page/repository/play_bloc.dart';
 import 'package:flute_music/home_page/home_page.dart';
 import 'package:flute_music/theming/dynamic_theming._bloc.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final ThemeBloc _themeBloc = new ThemeBloc();
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ThemeBloc>(
-        create: (BuildContext context) => ThemeBloc(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<ThemeBloc>(create: (BuildContext context) => ThemeBloc(),),
+        RepositoryProvider<PlayBloc>(create : (BuildContext context) => PlayBloc(),),
+      ],
         child: BlocBuilder<ThemeBloc, bool>(
           builder: (BuildContext context, bool isDark) {
           return MaterialApp(
