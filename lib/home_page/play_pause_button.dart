@@ -6,10 +6,10 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 class Play_Pause_Button extends StatelessWidget {
   const Play_Pause_Button({
     Key key,
-    @required this.widget,
+    @required this.isDark,
   }) : super(key: key);
 
-  final MyHomePage widget;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class Play_Pause_Button extends StatelessWidget {
       child: new NeumorphicButton(
         boxShape: NeumorphicBoxShape.circle(),
         onClick: () {},
-        style: widget.isDark ? dark_softUI : light_softUI,
+        style: isDark ? dark_softUI : light_softUI,
         child: new Icon(
           Icons.play_arrow,
           color: Theme.of(context).highlightColor,

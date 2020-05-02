@@ -1,12 +1,34 @@
-import 'dart:async';
+import 'package:bloc/bloc.dart';
 
-class ThemeBloc {
-  final _dynamic_theming_bloc = StreamController<bool>() ;
+// Events 
+enum ThemeEvent{
+  lightTheme ,
+  darkTheme
+}
 
-  get changeTheme => _dynamic_theming_bloc.sink.add ;
+// Our Business Logic
+class ThemeBloc extends Bloc<ThemeEvent, bool> {
+  @override
+  bool get initialState => false ;
 
-  get currentTheme => _dynamic_theming_bloc.stream ;
-} 
+  @override
+  void onTransition(Transition<ThemeEvent, bool> transition) {
+    print(transition);
+  }
+  
+  @override
+  Stream<bool> mapEventToState(
+    ThemeEvent event,
+  ) async* {
+    switch(event){
+      case ThemeEvent.lightTheme:
+        yield false ;
+        break ;
+      case ThemeEvent.darkTheme :
+        yield true ;
+        break ;
+    }
+  }
+}
 
- // Sink In 
- // Stream Out .
+// State will be at the Flutter Code .
