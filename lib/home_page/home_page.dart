@@ -106,14 +106,14 @@ class _MyHomePageState extends State<MyHomePage>
                                             flex: 4,
                                             child: GestureDetector(
                                               onTap: () {
-                                                // Navigator.push(
-                                                //     context,
-                                                //     MaterialPageRoute(
-                                                //         builder: (context) =>
-                                                //             Song_Detail_Page(
-                                                //                 info,
-                                                //                 albumArt,
-                                                //                 widget.isDark)));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Song_Detail_Page(
+                                                              info,
+                                                              albumArt,
+                                                            )));
                                               },
                                               child: Container(
                                                 color: Colors.transparent,
@@ -146,9 +146,7 @@ class _MyHomePageState extends State<MyHomePage>
                                               ),
                                             )),
                                         Play_Pause_Button(
-                                          isDark: isDark,
-                                          info : info
-                                        )
+                                            isDark: isDark, info: info)
                                       ],
                                     ),
                                   );
@@ -169,8 +167,7 @@ class _MyHomePageState extends State<MyHomePage>
                             height: MediaQuery.of(context).size.height * 0.10,
                             color: Colors.red,
                             child: new Text(
-                              BlocProvider.of<SongDataBloc>(context).state
-                            ),
+                                BlocProvider.of<SongDataBloc>(context).state),
                           ))
                       : SizedBox();
                 },
