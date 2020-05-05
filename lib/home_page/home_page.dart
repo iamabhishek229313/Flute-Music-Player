@@ -163,44 +163,32 @@ class _MyHomePageState extends State<MyHomePage>
                                           child: new NeumorphicButton(
                                               boxShape:
                                                   NeumorphicBoxShape.circle(),
-                                              onClick: () async{
-                                                print(
-                                                    "Audio Player State ==== " +
-                                                        player.playbackState
-                                                            .toString());
-                                                if (songData.state !=
-                                                        info.filePath &&
-                                                    songData.state != '') {
-                                                  // Some other media ia being played .
-                                                  playBloc.add(
-                                                      PlayEvent.triggerChange);
-                                                  // player.stop(); // stop previous song .
-                                                  await player.setUrl(info
-                                                      .filePath); // start a new song .
-                                                  player.play();
-                                                } else if (songData.state ==
-                                                        info.filePath &&
-                                                    (player.playbackState ==
-                                                        AudioPlaybackState
-                                                            .playing)) {
-                                                  // If the current song is being playerd and now it's time to pause it .
-                                                  player.pause();
-                                                } else if (songData.state ==
-                                                        info.filePath &&
-                                                    (player.playbackState ==
-                                                        AudioPlaybackState
-                                                            .paused)) {
-                                                  player.play();
+                                              onClick: () async {
+                                                if(songData.state == info.filePath){ // Does the play and pause thing .
+                                                  if(playBloc.state && (player.playbackState == AudioPlaybackState.playing)){
+                                                    //print("First") ;
+                                                    player.pause() ;
+                                                  }else if(!playBloc.state && (player.playbackState == AudioPlaybackState.paused)){
+                                                    //print("Second") ;
+                                                    player.play();
+                                                  }
+                                                }else if(playBloc.state && songData.state != info.filePath){
+                                                  // if something is being played and another button is clicked .
+                                                  if(songData.state != ''){
+                                                    playBloc.add(PlayEvent.triggerChange); // Change previous button state .
+                                                    if(player.playbackState == AudioPlaybackState.paused || player.playbackEvent == AudioPlaybackState.playing)
+                                                      player.stop(); // Wehteher previous one is being played or paused we delete it through lineup .
+                                                  }
+                                                  await player.setUrl(info.filePath) ; // Trigger out new song into the player .
+                                                  player.play() ; // Play the new song .
+                                                  //print("Fourth") ;
+                                                }else if(!playBloc.state && (songData.state == '') && (player.playbackState == AudioPlaybackState.none)){ // First time play  .
+                                                  await player.setUrl(info.filePath) ;
+                                                  player.play() ;
+                                                  //print("last one");
                                                 }
-                                                songData.add(ChangeSongId(info
-                                                    .filePath)); // Register the new song to the bloc .
-                                                playBloc.add(PlayEvent
-                                                    .triggerChange); // Trigger the change of state of PlayBloc .
-
-                                                print(
-                                                    "Audio Player State ==== Ends    " +
-                                                        player.playbackState
-                                                            .toString());
+                                                playBloc.add(PlayEvent.triggerChange);
+                                                songData.add(ChangeSongId(info.filePath));
                                               },
                                               style: isDark
                                                   ? dark_softUI
@@ -210,7 +198,8 @@ class _MyHomePageState extends State<MyHomePage>
                                                 builder: (BuildContext context,
                                                     bool isPlaying) {
                                                   return Icon(
-                                                    (songData.state == info.filePath &&
+                                                    (songData.state ==
+                                                                info.filePath &&
                                                             isPlaying)
                                                         ? Icons.pause
                                                         : Icons.play_arrow,
