@@ -166,26 +166,27 @@ class _MyHomePageState extends State<MyHomePage>
                                               onClick: () async {
                                                 if(songData.state == info.filePath){ // Does the play and pause thing .
                                                   if(playBloc.state && (player.playbackState == AudioPlaybackState.playing)){
-                                                    //print("First") ;
+                                                    print("First") ;
                                                     player.pause() ;
                                                   }else if(!playBloc.state && (player.playbackState == AudioPlaybackState.paused)){
-                                                    //print("Second") ;
+                                                    print("Second") ;
                                                     player.play();
                                                   }
-                                                }else if(playBloc.state && songData.state != info.filePath){
+                                                }else if(songData.state != info.filePath){
                                                   // if something is being played and another button is clicked .
+                                                  if(playBloc.state)
                                                   if(songData.state != ''){
-                                                    playBloc.add(PlayEvent.triggerChange); // Change previous button state .
-                                                    if(player.playbackState == AudioPlaybackState.paused || player.playbackEvent == AudioPlaybackState.playing)
-                                                      player.stop(); // Wehteher previous one is being played or paused we delete it through lineup .
+                                                    if(player.playbackState == AudioPlaybackState.playing)
+                                                      playBloc.add(PlayEvent.triggerChange); // Change previous button state .
                                                   }
+                                                  player.stop(); // Wehteher previous one is being played or paused we delete it through lineup .
                                                   await player.setUrl(info.filePath) ; // Trigger out new song into the player .
                                                   player.play() ; // Play the new song .
-                                                  //print("Fourth") ;
+                                                  print("Fourth") ;
                                                 }else if(!playBloc.state && (songData.state == '') && (player.playbackState == AudioPlaybackState.none)){ // First time play  .
                                                   await player.setUrl(info.filePath) ;
                                                   player.play() ;
-                                                  //print("last one");
+                                                  print("last one");
                                                 }
                                                 playBloc.add(PlayEvent.triggerChange);
                                                 songData.add(ChangeSongId(info.filePath));

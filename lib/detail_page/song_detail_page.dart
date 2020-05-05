@@ -32,8 +32,8 @@ class _Song_Detail_PageState extends State<Song_Detail_Page> {
 
   @override
   Widget build(BuildContext context) {
-    final _playBloc = BlocProvider.of<PlayBloc>(context);
-    final _songData = BlocProvider.of<SongDataBloc>(context);
+    final playBloc = BlocProvider.of<PlayBloc>(context);
+    final songData = BlocProvider.of<SongDataBloc>(context);
 
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
@@ -91,24 +91,58 @@ class _Song_Detail_PageState extends State<Song_Detail_Page> {
                                 height: MediaQuery.of(context).size.width * 0.8,
                                 child: NeumorphicButton(
                                   onClick: () async {
-                                    if (isPlaying &&
+                                    if (songData.state ==
+                                        widget.info.filePath) {
+                                      // Does the play and pause thing .
+                                      if (playBloc.state &&
+                                          (widget.player.playbackState ==
+                                              AudioPlaybackState.playing)) {
+                                        //print("First") ;
+                                        widget.player.pause();
+                                      } else if (!playBloc.state &&
+                                          (widget.player.playbackState ==
+                                              AudioPlaybackState.paused)) {
+                                        //print("Second") ;
+                                        widget.player.play();
+                                      }
+                                    } else if (songData.state !=
+                                        widget.info.filePath) {
+                                      // if something is being played and another button is clicked .
+                                      if (playBloc.state) if (songData.state !=
+                                          '') {
+                                        if (widget.player.playbackState ==
+                                            AudioPlaybackState.playing)
+                                          playBloc.add(PlayEvent
+                                              .triggerChange); // Change previous button state .
+                                      }
+                                      widget.player
+                                          .stop(); // Wehteher previous one is being played or paused we delete it through lineup .
+                                      await widget.player.setUrl(widget.info
+                                          .filePath); // Trigger out new song into the player .
+                                      widget.player.play(); // Play the new song .
+                                      print("Fourth");
+                                    } else if (!playBloc.state &&
+                                        (songData.state == '') &&
                                         (widget.player.playbackState ==
-                                            AudioPlaybackState.playing)) {
-                                      await widget.player.pause();
-                                      _songData.add(ChangeSongId(''));
-                                    } else if (!isPlaying) {
+                                            AudioPlaybackState.none)) {
+                                      // First time play  .
+                                      await widget.player
+                                          .setUrl(widget.info.filePath);
                                       widget.player.play();
-                                      _songData.add(
-                                          ChangeSongId(widget.info.filePath));
+                                      //print("last one");
                                     }
+                                    songData.add(
+                                        ChangeSongId(widget.info.filePath));
 
-                                    _playBloc.add(PlayEvent.triggerChange);
+                                    playBloc.add(PlayEvent.triggerChange);
                                   },
                                   provideHapticFeedback: true,
                                   boxShape: NeumorphicBoxShape.circle(),
                                   style: isDark ? dark_softUI : light_softUI,
                                   child: new Icon(
-                                      isPlaying
+                                      (isPlaying &&
+                                              (songData.state ==
+                                                  widget.info.filePath))
                                           ? Icons.pause
                                           : Icons.play_arrow,
                                       size: 60.0),
@@ -172,7 +206,6 @@ class _Song_Detail_PageState extends State<Song_Detail_Page> {
 
   @override
   void dispose() {
-    if (!(widget.player.playbackState == AudioPlaybackState.playing)) widget.player.dispose();
     super.dispose();
   }
 }
