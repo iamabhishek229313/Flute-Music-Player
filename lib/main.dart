@@ -1,11 +1,12 @@
+import 'package:flute_music/audio_player_wrapper.dart';
+import 'package:flute_music/detail_page/repository/audio_player_bloc.dart';
+import 'package:flute_music/detail_page/repository/page_delegate_bloc.dart';
 import 'package:flute_music/detail_page/repository/play_bloc.dart';
 import 'package:flute_music/detail_page/repository/playing_song_data_bloc.dart';
 import 'package:flute_music/home_page/home_page.dart';
 import 'package:flute_music/theming/dynamic_theming._bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:async';
-
 import 'package:provider/provider.dart';
 void main() {
   final previousCheck = Provider.debugCheckInvalidValueType;
@@ -23,7 +24,9 @@ class MyApp extends StatelessWidget {
       providers: [
         RepositoryProvider<ThemeBloc>(create: (BuildContext context) => ThemeBloc(),),
         RepositoryProvider<PlayBloc>(create : (BuildContext context) => PlayBloc(),),
-        RepositoryProvider<SongDataBloc>(create: (BuildContext context) => SongDataBloc(),)
+        RepositoryProvider<SongDataBloc>(create: (BuildContext context) => SongDataBloc(),),
+        RepositoryProvider<AudioPlayerBloc>(create: (BuildContext context) => AudioPlayerBloc(),),
+        RepositoryProvider<PageDelegateBloc>(create: (BuildContext context) => PageDelegateBloc(),)
       ],
         child: BlocBuilder<ThemeBloc, bool>(
           builder: (BuildContext context, bool isDark) {

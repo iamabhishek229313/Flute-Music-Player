@@ -9,7 +9,6 @@ class ChangeSongId extends SongDataEvent {
   ChangeSongId(this.id) ;
 }
 
-
 // evnets 
 
 class SongDataBloc extends Bloc<SongDataEvent, String> {
@@ -30,3 +29,4 @@ class SongDataBloc extends Bloc<SongDataEvent, String> {
     }
   }
 }
+

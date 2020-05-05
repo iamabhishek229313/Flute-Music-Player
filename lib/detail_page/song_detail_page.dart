@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flute_music/detail_page/repository/play_bloc.dart';
+import 'package:flute_music/detail_page/repository/playing_song_data_bloc.dart';
 import 'package:flute_music/neuromorphic_UI/neuromorphic_custom_styles.dart';
 import 'package:flute_music/theming/dynamic_theming._bloc.dart';
 import 'package:flutter/material.dart';
@@ -14,185 +15,164 @@ import 'package:just_audio/just_audio.dart';
 
 class Song_Detail_Page extends StatefulWidget {
   final SongInfo info;
+  final AudioPlayer player;
   final Color albumArt;
-  Song_Detail_Page(this.info, this.albumArt);
+  Song_Detail_Page(this.info, this.player, this.albumArt);
   @override
   _Song_Detail_PageState createState() => _Song_Detail_PageState();
 }
 
 class _Song_Detail_PageState extends State<Song_Detail_Page> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  static AudioPlayer player;
 
   @override
   void initState() {
     super.initState();
-    player = AudioPlayer();
-  }
-
-  setup_player() async {
-    await player.setUrl(widget.info.filePath);
-    return true;
   }
 
   @override
   Widget build(BuildContext context) {
     final _playBloc = BlocProvider.of<PlayBloc>(context);
+    final _songData = BlocProvider.of<SongDataBloc>(context);
 
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
-        body: new FutureBuilder(
-            future: setup_player(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                print(widget.info.filePath);
-                return BlocBuilder<ThemeBloc, bool>(
-                  builder: (BuildContext context, bool isDark) {
-                    return SafeArea(
-                      child: Column(
-                        children: [
-                          Custom_App_Bar(isDark: isDark),
-                          new SizedBox(
-                            height: ScreenUtil().setHeight(30.0),
-                          ),
-                          Album_Art_widget(isDark, widget.info),
-                          Song_Detail(widget: widget),
-                          new Container(
-                              height: MediaQuery.of(context).size.height * 0.11,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setWidth(0.0)),
-                              child: new SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                      activeTrackColor: widget.albumArt,
-                                      inactiveTrackColor: Colors.grey,
-                                      thumbColor:
-                                          Theme.of(context).highlightColor,
-                                      trackHeight:
-                                          ScreenUtil().setHeight(10.0)),
-                                  child: Slider(
-                                    min: 0.0,
-                                    max: 100.0,
-                                    value: 20.0,
-                                    onChanged: (val) {},
-                                  ))),
-                          new SizedBox(
-                            height: ScreenUtil().setHeight(60.0),
-                          ),
-                          new BlocBuilder<PlayBloc, bool>(
-                              builder: (BuildContext context, bool isPlaying) {
-                            return new Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                new Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.10,
-                                  child: new Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                        child: NeumorphicButton(
-                                          onClick: () {},
-                                          provideHapticFeedback: true,
-                                          boxShape: NeumorphicBoxShape.circle(),
-                                          style: isDark
-                                              ? dark_softUI
-                                              : light_softUI,
-                                          child: new Icon(Icons.skip_previous),
-                                        ),
-                                      ),
-                                      Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.8,
-                                        child: NeumorphicButton(
-                                          onClick: () async {
-                                            if (isPlaying) 
-                                              await player.pause();
-                                            else
-                                              player.play();
-
-                                            _playBloc
-                                                .add(PlayEvent.triggerChange);
-                                          },
-                                          provideHapticFeedback: true,
-                                          boxShape: NeumorphicBoxShape.circle(),
-                                          style: isDark
-                                              ? dark_softUI
-                                              : light_softUI,
-                                          child: new Icon(
-                                              isPlaying
-                                                  ? Icons.pause
-                                                  : Icons.play_arrow,
-                                              size: 60.0),
-                                        ),
-                                      ),
-                                      Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                        child: NeumorphicButton(
-                                          onClick: () {},
-                                          boxShape: NeumorphicBoxShape.circle(),
-                                          style: isDark
-                                              ? dark_softUI
-                                              : light_softUI,
-                                          child: new Icon(Icons.skip_next),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+        body: BlocBuilder<ThemeBloc, bool>(
+          builder: (BuildContext context, bool isDark) {
+            return SafeArea(
+              child: Column(
+                children: [
+                  Custom_App_Bar(isDark: isDark),
+                  new SizedBox(
+                    height: ScreenUtil().setHeight(30.0),
+                  ),
+                  Album_Art_widget(isDark, widget.info),
+                  Song_Detail(widget: widget),
+                  new Container(
+                      height: MediaQuery.of(context).size.height * 0.11,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setWidth(0.0)),
+                      child: new SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                              activeTrackColor: widget.albumArt,
+                              inactiveTrackColor: Colors.grey,
+                              thumbColor: Theme.of(context).highlightColor,
+                              trackHeight: ScreenUtil().setHeight(10.0)),
+                          child: Slider(
+                            min: 0.0,
+                            max: 100.0,
+                            value: 20.0,
+                            onChanged: (val) {},
+                          ))),
+                  new SizedBox(
+                    height: ScreenUtil().setHeight(60.0),
+                  ),
+                  new BlocBuilder<PlayBloc, bool>(
+                      builder: (BuildContext context, bool isPlaying) {
+                    return new Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        new Container(
+                          height: MediaQuery.of(context).size.height * 0.10,
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                height: MediaQuery.of(context).size.width * 0.5,
+                                child: NeumorphicButton(
+                                  onClick: () {},
+                                  provideHapticFeedback: true,
+                                  boxShape: NeumorphicBoxShape.circle(),
+                                  style: isDark ? dark_softUI : light_softUI,
+                                  child: new Icon(Icons.skip_previous),
                                 ),
-                                new Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.10,
-                                  child: new Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      new NeumorphicButton(
-                                        onClick: () {},
-                                        boxShape: NeumorphicBoxShape.roundRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0)),
-                                        style:
-                                            isDark ? dark_softUI : light_softUI,
-                                        child: new Icon(Icons.all_inclusive),
-                                      ),
-                                      new NeumorphicButton(
-                                        onClick: () {},
-                                        boxShape: NeumorphicBoxShape.roundRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0)),
-                                        style:
-                                            isDark ? dark_softUI : light_softUI,
-                                        child: new Icon(
-                                          Icons.favorite,
-                                          color: Theme.of(context).cardColor,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            );
-                          })
-                        ],
-                      ),
+                              ),
+                              Container(
+                                height: MediaQuery.of(context).size.width * 0.8,
+                                child: NeumorphicButton(
+                                  onClick: () async {
+                                    if (isPlaying &&
+                                        (widget.player.playbackState ==
+                                            AudioPlaybackState.playing)) {
+                                      await widget.player.pause();
+                                      _songData.add(ChangeSongId(''));
+                                    } else if (!isPlaying) {
+                                      widget.player.play();
+                                      _songData.add(
+                                          ChangeSongId(widget.info.filePath));
+                                    }
+
+                                    _playBloc.add(PlayEvent.triggerChange);
+                                  },
+                                  provideHapticFeedback: true,
+                                  boxShape: NeumorphicBoxShape.circle(),
+                                  style: isDark ? dark_softUI : light_softUI,
+                                  child: new Icon(
+                                      isPlaying
+                                          ? Icons.pause
+                                          : Icons.play_arrow,
+                                      size: 60.0),
+                                ),
+                              ),
+                              Container(
+                                height: MediaQuery.of(context).size.width * 0.5,
+                                child: NeumorphicButton(
+                                  onClick: () {},
+                                  boxShape: NeumorphicBoxShape.circle(),
+                                  style: isDark ? dark_softUI : light_softUI,
+                                  child: new Icon(Icons.skip_next),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        new Container(
+                          height: MediaQuery.of(context).size.height * 0.10,
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              new NeumorphicButton(
+                                onClick: () {},
+                                boxShape: NeumorphicBoxShape.roundRect(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                style: isDark ? dark_softUI : light_softUI,
+                                child: new Icon(Icons.all_inclusive),
+                              ),
+                              new NeumorphicButton(
+                                onClick: () {},
+                                boxShape: NeumorphicBoxShape.roundRect(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                style: isDark ? dark_softUI : light_softUI,
+                                child: new Icon(
+                                  Icons.favorite,
+                                  color: Theme.of(context).cardColor,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
                     );
-                  },
-                );
-              } else if (snapshot.connectionState == ConnectionState.waiting)
-                return Center(child: CircularProgressIndicator());
-            }));
+                  })
+                ],
+              ),
+            );
+          },
+        ));
+    // new FutureBuilder(
+    //     future: setup_player(),
+    //     builder: (context, snapshot) {
+    //       if (snapshot.hasData) {
+    //         print(widget.info.filePath);
+
+    //       } else if (snapshot.connectionState == ConnectionState.waiting)
+    //         return Center(child: CircularProgressIndicator());
+    //     })
   }
 
   @override
   void dispose() {
-    if (!(player.playbackState == AudioPlaybackState.playing)) player.dispose();
+    if (!(widget.player.playbackState == AudioPlaybackState.playing)) widget.player.dispose();
     super.dispose();
   }
 }
