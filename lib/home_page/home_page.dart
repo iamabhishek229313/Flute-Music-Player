@@ -104,116 +104,123 @@ class _MyHomePageState extends State<MyHomePage>
                                           : Colors.black;
                                   final double duration =
                                       int.parse(info.duration) / 1000 / 60;
-                                  return Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.09,
-                                    margin: index == 0
-                                        ? EdgeInsets.only(top: 10.0)
-                                        : null,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        new Expanded(
-                                            flex: 4,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Song_Detail_Page(
-                                                              info,
-                                                              player,
-                                                              albumArt,
-                                                            )));
-                                              },
-                                              child: Container(
-                                                color: Colors.transparent,
-                                                child: new Row(
-                                                  children: [
-                                                    new Expanded(
-                                                        flex: 1,
-                                                        child: Container(
-                                                          height: ScreenUtil()
-                                                              .setHeight(95.0),
-                                                          width: ScreenUtil()
-                                                              .setHeight(95.0),
-                                                          decoration: new BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color: info.albumArtwork ==
-                                                                      null
-                                                                  ? Colors.primaries[Random()
-                                                                      .nextInt(Colors
-                                                                          .primaries
-                                                                          .length)]
-                                                                  : Colors
-                                                                      .black),
-                                                        )),
-                                                    Song_Card_Details(
-                                                        info: info,
-                                                        duration: duration)
-                                                  ],
-                                                ),
-                                              ),
-                                            )),
-                                        Expanded(
-                                          flex: 1,
-                                          child: new NeumorphicButton(
-                                              boxShape:
-                                                  NeumorphicBoxShape.circle(),
-                                              onClick: () async {
-                                                if(songData.state == info.filePath){ // Does the play and pause thing .
-                                                  if(playBloc.state && (player.playbackState == AudioPlaybackState.playing)){
-                                                    print("First") ;
-                                                    player.pause() ;
-                                                  }else if(!playBloc.state && (player.playbackState == AudioPlaybackState.paused)){
-                                                    print("Second") ;
-                                                    player.play();
-                                                  }
-                                                }else if(songData.state != info.filePath){
-                                                  // if something is being played and another button is clicked .
-                                                  if(playBloc.state)
-                                                  if(songData.state != ''){
-                                                    if(player.playbackState == AudioPlaybackState.playing)
-                                                      playBloc.add(PlayEvent.triggerChange); // Change previous button state .
-                                                  }
-                                                  player.stop(); // Wehteher previous one is being played or paused we delete it through lineup .
-                                                  await player.setUrl(info.filePath) ; // Trigger out new song into the player .
-                                                  player.play() ; // Play the new song .
-                                                  print("Fourth") ;
-                                                }else if(!playBloc.state && (songData.state == '') && (player.playbackState == AudioPlaybackState.none)){ // First time play  .
-                                                  await player.setUrl(info.filePath) ;
-                                                  player.play() ;
-                                                  print("last one");
-                                                }
-                                                playBloc.add(PlayEvent.triggerChange);
-                                                songData.add(ChangeSongId(info.filePath));
-                                              },
-                                              style: isDark
-                                                  ? dark_softUI
-                                                  : light_softUI,
-                                              child:
-                                                  BlocBuilder<PlayBloc, bool>(
-                                                builder: (BuildContext context,
-                                                    bool isPlaying) {
-                                                  return Icon(
-                                                    (songData.state ==
-                                                                info.filePath &&
-                                                            isPlaying)
-                                                        ? Icons.pause
-                                                        : Icons.play_arrow,
-                                                    color: Theme.of(context)
-                                                        .highlightColor,
-                                                  );
-                                                },
-                                              )),
-                                        )
-                                        // Play_Pause_Button(
-                                        //     isDark: isDark, info: info ,player : player)
-                                      ],
-                                    ),
+                                  return Column(
+                                    children: <Widget>[
+                                      Container(
+                                        height: MediaQuery.of(context).size.height *
+                                            0.09,
+                                        margin: index == 0
+                                            ? EdgeInsets.only(top: 10.0)
+                                            : null,
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            new Expanded(
+                                                flex: 4,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                Song_Detail_Page(
+                                                                  info,
+                                                                  player,
+                                                                  albumArt,
+                                                                )));
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.transparent,
+                                                    child: new Row(
+                                                      children: [
+                                                        new Expanded(
+                                                            flex: 1,
+                                                            child: Container(
+                                                              height: ScreenUtil()
+                                                                  .setHeight(95.0),
+                                                              width: ScreenUtil()
+                                                                  .setHeight(95.0),
+                                                              decoration: new BoxDecoration(
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                  color: info.albumArtwork ==
+                                                                          null
+                                                                      ? Colors.primaries[Random()
+                                                                          .nextInt(Colors
+                                                                              .primaries
+                                                                              .length)]
+                                                                      : Colors
+                                                                          .black),
+                                                            )),
+                                                        Song_Card_Details(
+                                                            info: info,
+                                                            duration: duration)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )),
+                                            Expanded(
+                                              flex: 1,
+                                              child: new NeumorphicButton(
+                                                  boxShape:
+                                                      NeumorphicBoxShape.circle(),
+                                                  onClick: () async {
+                                                    if(songData.state == info.filePath){ // Does the play and pause thing .
+                                                      if(playBloc.state && (player.playbackState == AudioPlaybackState.playing)){
+                                                        print("First") ;
+                                                        player.pause() ;
+                                                      }else if(!playBloc.state && (player.playbackState == AudioPlaybackState.paused)){
+                                                        print("Second") ;
+                                                        player.play();
+                                                      }
+                                                    }else if(songData.state != info.filePath){
+                                                      // if something is being played and another button is clicked .
+                                                      if(playBloc.state)
+                                                      if(songData.state != ''){
+                                                        if(player.playbackState == AudioPlaybackState.playing)
+                                                          playBloc.add(PlayEvent.triggerChange); // Change previous button state .
+                                                      }
+                                                      player.stop(); // Wehteher previous one is being played or paused we delete it through lineup .
+                                                      await player.setUrl(info.filePath) ; // Trigger out new song into the player .
+                                                      player.play() ; // Play the new song .
+                                                      print("Fourth") ;
+                                                    }else if(!playBloc.state && (songData.state == '') && (player.playbackState == AudioPlaybackState.none)){ // First time play  .
+                                                      await player.setUrl(info.filePath) ;
+                                                      player.play() ;
+                                                      print("last one");
+                                                    }
+                                                    playBloc.add(PlayEvent.triggerChange);
+                                                    songData.add(ChangeSongId(info.filePath));
+                                                  },
+                                                  style: isDark
+                                                      ? dark_softUI
+                                                      : light_softUI,
+                                                  child:
+                                                      BlocBuilder<PlayBloc, bool>(
+                                                    builder: (BuildContext context,
+                                                        bool isPlaying) {
+                                                      return Icon(
+                                                        (songData.state ==
+                                                                    info.filePath &&
+                                                                isPlaying)
+                                                            ? Icons.pause
+                                                            : Icons.play_arrow,
+                                                        color: Theme.of(context)
+                                                            .highlightColor,
+                                                      );
+                                                    },
+                                                  )),
+                                            )
+                                            // Play_Pause_Button(
+                                            //     isDark: isDark, info: info ,player : player)
+                                          ],
+                                        ),
+                                      ),
+                                      index == snapshot.data.length -1 ?Container(
+                                        height: MediaQuery.of(context).size.height * 0.1,
+                                      ) :Container()
+                                    ],
                                   );
                                 });
                           }

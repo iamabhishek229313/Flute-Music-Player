@@ -78,7 +78,11 @@ class _Song_Detail_PageState extends State<Song_Detail_Page> {
                                       setState(() {
                                         dragValue = val ;
                                         widget.player.seek(Duration(milliseconds: val.round()));
-
+                                        if(val == duration.inMilliseconds.toDouble()){
+                                          widget.player.stop();
+                                          playBloc.add(PlayEvent.triggerChange);
+                                          print("completed task !");
+                                        }
                                       });
                                     },
                                     onChangeEnd: (endVal){
