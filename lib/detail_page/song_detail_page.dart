@@ -24,7 +24,7 @@ class Song_Detail_Page extends StatefulWidget {
 
 class _Song_Detail_PageState extends State<Song_Detail_Page> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  var dragValue ;
   @override
   void initState() {
     super.initState();
@@ -58,11 +58,39 @@ class _Song_Detail_PageState extends State<Song_Detail_Page> {
                               inactiveTrackColor: Colors.grey,
                               thumbColor: Theme.of(context).highlightColor,
                               trackHeight: ScreenUtil().setHeight(10.0)),
-                          child: Slider(
-                            min: 0.0,
-                            max: 100.0,
-                            value: 20.0,
-                            onChanged: (val) {},
+                          child: StreamBuilder<Duration>(
+                            stream: widget.player.durationStream,
+                            builder: (context, snapshot) {
+                              var duration = snapshot.data ?? Duration.zero;
+                              return StreamBuilder(
+                                stream: widget.player.getPositionStream(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  var position = snapshot.data ?? Duration.zero;
+                                  if (position > duration) {
+                                    position = duration;
+                                  }
+                                  return Slider(
+                                    min: 0.0,
+                                    max: duration.inMilliseconds.toDouble(),
+                                    value: dragValue ?? position.inMilliseconds.toDouble(),
+                                    onChanged: (val) {
+                                      setState(() {
+                                        dragValue = val ;
+                                        widget.player.seek(Duration(milliseconds: val.round()));
+
+                                      });
+                                    },
+                                    onChangeEnd: (endVal){
+                                      setState(() {
+                                        dragValue = null ;
+                                        widget.player.seek(Duration(milliseconds: endVal.round()));
+                                      });
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ))),
                   new SizedBox(
                     height: ScreenUtil().setHeight(60.0),
@@ -119,7 +147,8 @@ class _Song_Detail_PageState extends State<Song_Detail_Page> {
                                           .stop(); // Wehteher previous one is being played or paused we delete it through lineup .
                                       await widget.player.setUrl(widget.info
                                           .filePath); // Trigger out new song into the player .
-                                      widget.player.play(); // Play the new song .
+                                      widget.player
+                                          .play(); // Play the new song .
                                       print("Fourth");
                                     } else if (!playBloc.state &&
                                         (songData.state == '') &&
@@ -193,15 +222,6 @@ class _Song_Detail_PageState extends State<Song_Detail_Page> {
             );
           },
         ));
-    // new FutureBuilder(
-    //     future: setup_player(),
-    //     builder: (context, snapshot) {
-    //       if (snapshot.hasData) {
-    //         print(widget.info.filePath);
-
-    //       } else if (snapshot.connectionState == ConnectionState.waiting)
-    //         return Center(child: CircularProgressIndicator());
-    //     })
   }
 
   @override
