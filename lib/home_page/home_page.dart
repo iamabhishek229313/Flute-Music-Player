@@ -4,7 +4,6 @@ import 'package:flute_music/detail_page/repository/play_bloc.dart';
 import 'package:flute_music/detail_page/repository/playing_song_data_bloc.dart';
 import 'package:flute_music/detail_page/song_detail_page.dart';
 import 'package:flute_music/home_page/animated_progress.dart';
-import 'package:flute_music/home_page/play_pause_button.dart';
 import 'package:flute_music/home_page/song_card_details.dart';
 import 'package:flute_music/neuromorphic_UI/neuromorphic_custom_styles.dart';
 import 'package:flute_music/song_data/fetch_songs.dart';
@@ -43,6 +42,7 @@ class _MyHomePageState extends State<MyHomePage>
         BlocProvider.of<PlayBloc>(context).state.toString());
     print("State of the songData revceicved " +
         BlocProvider.of<SongDataBloc>(context).state.toString());
+
     final playBloc = BlocProvider.of<PlayBloc>(context);
     final songData = BlocProvider.of<SongDataBloc>(context);
 
@@ -369,7 +369,15 @@ class _MyHomePageState extends State<MyHomePage>
                                               )),
                                         ),
                                         InkWell(
-                                            onTap: () {},
+                                            onTap: () async{
+                                              print("Executing");
+                                              playBloc.add(PlayEvent.triggerChange);
+                                              if(player.playbackState == AudioPlaybackState.playing){
+                                                await player.pause();
+                                              }else if(player.playbackState == AudioPlaybackState.paused){
+                                                await player.play() ;
+                                              }
+                                            },
                                             child: new Icon(isPlaying
                                                 ? Icons.pause
                                                 : Icons.play_arrow , size: ScreenUtil().setSp(100.0),) ),
