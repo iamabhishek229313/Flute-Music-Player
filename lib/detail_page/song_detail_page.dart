@@ -383,10 +383,9 @@ class Album_Art_widget extends StatelessWidget {
                 child: Hero(
                     tag: info.filePath,
                     child: new Container(
-                      color: Colors.blue,
-                      // child: widget.info.albumArtwork == null
-                      //     ? null
-                      //     : null),
+                      child : new Image(
+                        image: new AssetImage('assets/images/steal_my_girl.jpg'),
+                      )
                     ) //Image.network(widget.info.albumArtwork)),
                     )),
           ),
