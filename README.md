@@ -9,30 +9,19 @@ Mozilla
 Building this app with intention of learning flutter better .
 
 ## 📱 Screenshots
-|                                                     Splash Screen                                                      |                                                   Login Page                                                   |
+|                                                     Homepage  Light Mode                                                      |                                                   Homepage Dark Mode                                                   |
 |:----------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------:|
-| ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_splash_screen.png?raw=true) | ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_login.png?raw=true) |
+| ![](https://github.com/iamabhishek229313/Flute-Music-Player/blob/master/screenshots/flute_player_lightmode_main.png?raw=true) | ![](https://github.com/iamabhishek229313/Flute-Music-Player/blob/master/screenshots/flute_player_darkmode_main.png?raw=true) |
 
-|                                          Phone number verification                                           |                                                  Profile Screen                                                  |
+|                                          Song Detail Page Light Mode                                           |                                                  Song Detail Page Dark Mode                                                   |
 |:------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------:|
-| ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_otp.png?raw=true) | ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_profile.png?raw=true) |
+| ![](https://github.com/iamabhishek229313/Flute-Music-Player/blob/master/screenshots/flute_player_lightmode_song_detail.png?raw=true) | ![](https://github.com/iamabhishek229313/Flute-Music-Player/blob/master/screenshots/flute_player_darkmode_main.png?raw=true) |
 
-
-|                                                    Messages and Feeds                                                     |                                                    In person chat                                                     |
-|:-------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------:|
-| ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_messagesandfeeds.png?raw=true) | ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_InChatScreen.png?raw=true) |
-
-|                                              Tinder Right Swipe                                               |                                               Tinder Left Swipe                                               |
-|:-------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
-| ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_nope.png?raw=true) | ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_like.png?raw=true) |
-
- Matchings     |
-:-------------------------:|
-![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_main.png)
 
 
 ## 📚 Technical Details
 ```
+UI made of latest Neuromorphic Design .
 Uses BLoC pattern for state managment .
 Dark mode is availiable .
 Built entirely on Dart without use of native language . 
