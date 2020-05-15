@@ -15,7 +15,7 @@ Building this app with intention of learning flutter better .
 
 |                                          Song Detail Page Light Mode                                           |                                                  Song Detail Page Dark Mode                                                   |
 |:------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------:|
-| ![](https://github.com/iamabhishek229313/Flute-Music-Player/blob/master/screenshots/flute_player_lightmode_song_detail.png?raw=true) | ![](https://github.com/iamabhishek229313/Flute-Music-Player/blob/master/screenshots/flute_player_darkmode_song_detail.pngraw=true) |
+| ![](https://github.com/iamabhishek229313/Flute-Music-Player/blob/master/screenshots/flute_player_lightmode_song_detail.png?raw=true) | ![](https://github.com/iamabhishek229313/Flute-Music-Player/blob/master/screenshots/flute_player_darkmode_song_detail.png?raw=true) |
 
 
 
